@@ -15,6 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    # check what files are present in root folder
+    - name: Check root folder
+      run: ls -la
 
     # cd to ./redwoodap folder before running yarn
     - name: cd to ./redwoodap folder
