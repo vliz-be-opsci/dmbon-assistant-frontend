@@ -22,6 +22,10 @@ jobs:
     # cd to ./redwoodap folder before running yarn
     - name: cd to ./redwoodap folder
       run: cd redwoodap
+
+    - name: Check redwoodap folder
+      run: ls -la
+
     # Install rw dependencies via yarn with commands yarn install and yarn rw build
     - name: Install rw dependencies and build static files
       run: yarn install && yarn rw build
