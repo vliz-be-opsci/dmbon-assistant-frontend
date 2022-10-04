@@ -15,4 +15,5 @@ const App = () => (
     </RedwoodProvider>
   </FatalErrorBoundary>
 )
+
 export default App
