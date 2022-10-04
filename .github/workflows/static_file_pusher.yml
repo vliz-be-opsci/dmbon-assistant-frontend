@@ -15,20 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    # check what files are present in root folder
-    - name: Check root folder
-      run: ls -la
-
-    # cd to ./redwoodap folder before running yarn
-    - name: cd to ./redwoodap folder
-      run: cd redwoodap
-
-    - name: Check redwoodap folder
-      run: ls -la
-
     # Install rw dependencies via yarn with commands yarn install and yarn rw build
     - name: Install rw dependencies and build static files
-      run: yarn install && yarn rw build
+      run: cd redwoodap && yarn install && yarn rw build
 
     - name: Setup Environment
       uses: actions/setup-node@v3
