@@ -18,12 +18,6 @@ jobs:
     # Install rw dependencies via yarn with commands yarn install and yarn rw build
     - name: Install rw dependencies and build static files
       run: cd redwoodap && yarn install && yarn rw build
-
-    - name: Setup Environment
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.1.0 #check if this needs to be updated from time to time
-    - run: npm install #check what commands need to be executed before static files can be generated
       
     - name: Bump version and push tag
       uses: anothrNick/github-tag-action@1.36.0
