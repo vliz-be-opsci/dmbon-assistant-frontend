@@ -297,12 +297,12 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
         <div className="title_file_content">
           <p>Files</p>
         {FileActions(setExploreradded, datacrate_uuid,
-           Showuploadmodal, setShowuploadmodal,
+            Showuploadmodal, setShowuploadmodal,
             ShowDeleteModal, setShowDeleteModal,
-             ShowAnnotationModal, setShowAnnotationModal,
-              ActionPerforming, setActionPerforming,
-              listcurrentfiles,checkboxSelectedFiles,
-              normalselectedfiles, setNormalselectedfiles)}
+            ShowAnnotationModal, setShowAnnotationModal,
+            ActionPerforming, setActionPerforming,
+            listcurrentfiles,checkboxSelectedFiles,
+            normalselectedfiles, setNormalselectedfiles)}
         </div>
         <div className="searchbar">
           <div className="input_folder">

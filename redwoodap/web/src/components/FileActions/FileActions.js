@@ -2,7 +2,7 @@ import { BsTrashFill , BsUpload} from "react-icons/bs";
 import { FaRegEdit, FaBookMedical } from "react-icons/fa";
 import {Modal} from "react-bootstrap";
 //inport util functions for opening explorer and fixcrate
-import { fixDatacrate , getOpenFileExplorer, deleteContent} from "src/utils/AxiosRequestsHandlers";
+import { fixDatacrate , getOpenFileExplorer, deleteContent, getAnnotationsFile} from "src/utils/AxiosRequestsHandlers";
 
 const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadmodal, ShowDeleteModal, setShowDeleteModal, ShowAnnotationModal, setShowAnnotationModal, ActionPerforming, setActionPerforming ,listcurrentfiles, checkboxselectedfiles, normalselectedfiles, setNormalselectedfiles) => {
 
@@ -23,6 +23,26 @@ const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadm
     });
     console.log("fix clicked");
   };
+
+  //function that wil do an axios request foreach file in normalselected files
+  const getsummary = () => {
+    console.log("getsummary clicked");
+    console.log(normalselectedfiles);
+    let toreturn = [];
+    normalselectedfiles.forEach((file) => {
+      console.log(file);
+      //perform axios request here to get annotation of file
+      getAnnotationsFile(datacrate_uuid, encodeURIComponent(file)).then((res) => {
+        console.log(res);
+        toreturn.push(res);
+      })
+    });
+    return toreturn;
+  };
+
+  const summaryfiles = getsummary();
+  console.log(summaryfiles);
+
 
   //function that will run the axios delete request to delete the Todeletefiles
   const deleteFiles = () => {
@@ -59,9 +79,25 @@ const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadm
         <button onClick={() => setShowDeleteModal(false)}> Cancel </button>
       </Modal.Body>
     </Modal>
-    <Modal show={ShowAnnotationModal}>
+    <Modal show={ShowAnnotationModal} fullscreen="xxl-down">
       <Modal.Body>
         <h3>Annotate files</h3>
+
+        //if actionperforming then show the loading animation
+        {ActionPerforming ? (
+          <div className="loading">
+            <p>Loading summary</p>
+          </div>
+        ) : (
+          <div className="summary">
+            <div className="summary__header">
+              <h3>Summary</h3>
+            </div>
+            <div className="summary__body">
+              <p>all summary things here</p>
+            </div>
+          </div>
+        )}
         <table className="table_vliz">
           <thead>
           <tr>

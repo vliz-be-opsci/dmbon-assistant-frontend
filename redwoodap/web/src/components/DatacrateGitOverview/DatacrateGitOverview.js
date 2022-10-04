@@ -19,7 +19,7 @@ const DatacrateGitOverview = (datacrate_id) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [ShowModalCommit, setShowModalCommit] = useState(false);
   const [CommitMessage, setCommitMessage] = useState("");
-  const [CommitDescription, setCommitDescription] = useState(""); 
+  const [CommitDescription, setCommitDescription] = useState("");
   const [ToShowDiffs, setToShowDiffs] = useState([]);
   const [customDiffs, setCustomDiffs] = useState([]);
 
@@ -79,6 +79,7 @@ const DatacrateGitOverview = (datacrate_id) => {
 
   //function customdiff that will parse the diff string and split the string on diff --git
   const customDiff = (diffString) => {
+    /*
     const diffArray = diffString.split("diff --git");
     //loop through array and remove the first element , then split on \n
     for (let i = 0; i < diffArray.length; i++) {
@@ -86,14 +87,15 @@ const DatacrateGitOverview = (datacrate_id) => {
         diffArray.shift();
       }
       const diffArraySplit = diffArray[i].split("\n");
-      //loop through array 
+      //loop through array
       for (let j = 0; j < diffArraySplit.length; j++) {
         console.log(diffArraySplit[j]);
       }
-    }
+    }*/
+    console.log(diffString);
   }
 
-  //component that will be the git diff render 
+  //component that will be the git diff render
   const renderDiff = (diffText) => {
     const files = parseDiff(diffText);
     const buttontext = (newPath) => {

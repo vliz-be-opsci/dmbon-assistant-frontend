@@ -28,6 +28,8 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
    const [checkboxSelectedFiles, setCheckboxSelectedFiles] = useState([]);
    const [normalselectedfiles, setNormalselectedfiles] = useState([]);
 
+
+
   //useEffect that gets triggered by a change in DeleteAnnotation, if deleteAnnotationFile is false then it will get annotations for the file and set the state of DatacrateContent to the annotations
   useEffect(() => {
     if(!DeletingAnnotation){
