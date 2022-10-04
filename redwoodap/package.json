@@ -18,6 +18,9 @@
     "node": ">=14.19 <=16.x",
     "yarn": ">=1.15"
   },
+  "scripts": {
+    "pwa": "http-server ./web/dist"
+  },
   "prisma": {
     "seed": "yarn rw exec seed"
   },
