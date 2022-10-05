@@ -34,9 +34,9 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
   useEffect(() => {
     if(!DeletingAnnotation){
       if(modalContent.file_name){
-        console.log(modalContent.file_name);
+        //console.log(modalContent.file_name);
         getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
-          console.log(res.data);
+          //console.log(res.data);
           setSpecificFileContent(res.data);
           // set the DatarcateContent.file.summary to res.data.summary
           let file_name = modalContent.file_name;
@@ -62,9 +62,9 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
   useEffect(() => {
     if(!AddingAnnotation){
       if(modalContent.file_name){
-        console.log(modalContent.file_name);
+        //console.log(modalContent.file_name);
         getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
-          console.log(res.data);
+          //console.log(res.data);
           setSpecificFileContent(res.data);
           let file_name = modalContent.file_name;
           for(let key in DatacrateContent){
@@ -97,7 +97,7 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
       }
 
       setDatacrateContent(contentdata);
-      console.log(res.data.data);
+      //console.log(res.data.data);
       setLoading(false);
     }
     ).catch(err => {
@@ -112,12 +112,12 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
   //useeffect that triggers when modalcontent is updated that will fetch the specific file content
   useEffect(() => {
     if(modalContent.file_name){
-      console.log(modalContent.file_name);
+      //console.log(modalContent.file_name);
       getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         setSpecificFileContent(res.data);
       }).catch(err => {
-        console.log(err);
+        //console.log(err);
         setError(true);
         setErrorMessage(err);
       }
@@ -131,8 +131,8 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
     //check if modalContent contains the keys "info" and "file_name"
     if(modalContent.hasOwnProperty("info") && modalContent.hasOwnProperty("file_name")){
       //check if the length of oject.keys(specificFileContent) is  > 0
-      console.log(specificFileContent);
-      console.log(Object.keys(specificFileContent));
+      //console.log(specificFileContent);
+      //console.log(Object.keys(specificFileContent));
       if(Object.keys(specificFileContent).length > 0){
         return(
           <Modal show={showmodal} fullscreen={true} onHide={() => setShowmodal(false)}>

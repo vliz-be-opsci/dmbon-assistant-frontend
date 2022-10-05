@@ -4,7 +4,10 @@ import {Modal} from "react-bootstrap";
 //inport util functions for opening explorer and fixcrate
 import { fixDatacrate , getOpenFileExplorer, deleteContent, getAnnotationsFile} from "src/utils/AxiosRequestsHandlers";
 
-const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadmodal, ShowDeleteModal, setShowDeleteModal, ShowAnnotationModal, setShowAnnotationModal, ActionPerforming, setActionPerforming ,listcurrentfiles, checkboxselectedfiles, normalselectedfiles, setNormalselectedfiles) => {
+const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadmodal, ShowDeleteModal, setShowDeleteModal, ShowAnnotationModal, setShowAnnotationModal, ActionPerforming, setActionPerforming ,listcurrentfiles, checkboxselectedfiles, normalselectedfiles, AnnotationFileInfo) => {
+
+
+  console.log(AnnotationFileInfo);
 
   // when upload clicked open file explorer and a popup with a message to place files in the folder
   const upload = () => {
@@ -13,6 +16,8 @@ const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadm
     });
     console.log("upload clicked");
   };
+
+  //AnnotationFileInfo
 
   const fix = () => {
     setuploadmodal(false);
@@ -26,23 +31,26 @@ const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadm
 
   //function that wil do an axios request foreach file in normalselected files
   const getsummary = () => {
-    console.log("getsummary clicked");
+    console.log("getsummary of selected files");
     console.log(normalselectedfiles);
     let toreturn = [];
     normalselectedfiles.forEach((file) => {
       console.log(file);
       //perform axios request here to get annotation of file
-      getAnnotationsFile(datacrate_uuid, encodeURIComponent(file)).then((res) => {
+      getAnnotationsFile(datacrate_uuid, encodeURIComponent(file))
+      .then((res) => {
         console.log(res);
         toreturn.push(res);
-      })
+        setNumberGetAnnotationFiles(NumberGetAnnotationFiles + 1);
+      }).catch((err) => {
+        console.log(err);
+        setNumberGetAnnotationFiles(NumberGetAnnotationFiles + 1);
+      });
     });
-    return toreturn;
+    setAnnotationFileInfo(toreturn);
   };
 
-  const summaryfiles = getsummary();
-  console.log(summaryfiles);
-
+  //getsummary();
 
   //function that will run the axios delete request to delete the Todeletefiles
   const deleteFiles = () => {
@@ -79,11 +87,9 @@ const FileActions = (ActionPerformingEx, datacrate_uuid, uploadmodal, setuploadm
         <button onClick={() => setShowDeleteModal(false)}> Cancel </button>
       </Modal.Body>
     </Modal>
-    <Modal show={ShowAnnotationModal} fullscreen="xxl-down">
+    <Modal show={ShowAnnotationModal} fullscreen="down-xxl" size="xl">
       <Modal.Body>
         <h3>Annotate files</h3>
-
-        //if actionperforming then show the loading animation
         {ActionPerforming ? (
           <div className="loading">
             <p>Loading summary</p>

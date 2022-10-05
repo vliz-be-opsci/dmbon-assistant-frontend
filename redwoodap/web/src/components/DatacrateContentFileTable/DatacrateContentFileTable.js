@@ -4,6 +4,7 @@ import AxiosError from "../AxiosError/AxiosError";
 import {Modal} from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
 import {VscListTree} from "react-icons/vsc";
+import $ from 'jquery';
 import LoadingBlock from "../LoadingBlock/LoadingBlock";
 import DatacrateContentFileRow from "../DatacrateContentFileRow/DatacrateContentFileRow";
 import AnnotationTable from "../AnnotationTable/AnnotationTable";
@@ -41,6 +42,7 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
   const [ActionPerforming, setActionPerforming] = useState(false);
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
   const [ShowAnnotationModal, setShowAnnotationModal] = useState(false);
+  const [AnnotationFileInfo, setAnnotationFileInfo] = useState([]);
 
   //filefolder and text search states here
   const [currentfolder, setcurrentfolder] = useState(".");
@@ -50,6 +52,21 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
 
   console.log(`predicate annotation is ${PredicateAnnotation}`);
   console.log(`dtatacratecontent is ${DatacrateContent}`);
+
+  //useEffect that gets triggered by a change in the normal selected files
+  useEffect(() => {
+    console.log("getsummary of selected files");
+    console.log(normalselectedfiles);
+    let toreturn = [];
+    normalselectedfiles.forEach((file) => {
+      console.log(file);
+      //get the summary of the file
+      let filecontent = DatacrateContent[file];
+      toreturn.push(filecontent);
+    });
+    setAnnotationFileInfo(toreturn);
+    setDatacrateContent(DatacrateContent);
+  }, [normalselectedfiles,checkboxSelectedFiles]);
 
   useEffect(() => {
     if(!exploreradded){
@@ -82,7 +99,6 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
     }
   }, [exploreradded]);
 
-
   //useEffect that gets triggered by a change in DeleteAnnotation, if deleteAnnotationFile is false then it will get annotations for the file and set the state of DatacrateContent to the annotations
   useEffect(() => {
     if(!DeletingAnnotation){
@@ -110,12 +126,11 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
     }
   }, [DeletingAnnotation]);
 
-
   //useffect that gets triggered by a change in AddingAnnotation, if adding annotation is false it will get annotations for file and set the state to the annotations
   useEffect(() => {
     if(!AddingAnnotation){
       if(modalContent.file_name){
-        console.log(modalContent.file_name);
+        //console.log(modalContent.file_name);
         getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
           console.log(res.data);
           setSpecificFileContent(res.data);
@@ -142,10 +157,10 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
       let allResourceNodess = [];
       let allfolders = [];
       for(let entry in res.data.data){
-        console.log(entry);
+        //console.log(entry);
         if(entry.includes("http") || entry.includes("https") || !entry.startsWith("./")){
-          console.log('this is a resource node');
-          console.log(entry);
+          //console.log('this is a resource node');
+          //console.log(entry);
           //add the entry to the allResourceNodes state
           allResourceNodess.push(entry);
         }else{
@@ -160,8 +175,8 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
           }
         }
       }
-      console.log(allfolders);
-      console.log(allResourceNodess);
+      //console.log(allfolders);
+      //console.log(allResourceNodess);
       setAllResourceNodes(allResourceNodess);
       setListallfolders(allfolders);
       setDatacrateContent(contentdata);
@@ -178,13 +193,24 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
     );
   }, [datacrate_uuid]);
 
+  //function that converrts filename in compressed_file name
+  const convertFileName = (file_to_render) => {
+    // const file_to_render_compressed = file_to_render.replace(/ /g, "_");
+    let file_to_render_compressed = file_to_render.replace(/ /g, "_");
+    // replace . by _ to avoid problems with jquery
+    file_to_render_compressed = file_to_render_compressed.replace(/\./g, "_");
+    // replace / by _ to avoid problems with jquery
+    file_to_render_compressed = file_to_render_compressed.replace(/\//g, "_");
+    return file_to_render_compressed;
+  }
+
   //useEffect that gets triggered by a change in breadcrumbs, it gets all the input folders from the last element in the breadcrumbs array, if array is 0 then
   //useeffect that triggers when modalcontent is updated that will fetch the specific file content
   useEffect(() => {
     if(modalContent.file_name){
-      console.log(modalContent.file_name);
+      //console.log(modalContent.file_name);
       getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
-        console.log(res.data);
+        //console.log(res.data);
         setSpecificFileContent(res.data);
       }).catch(err => {
         console.log(err);
@@ -202,6 +228,8 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
     let searchtextupper = searchtext.toUpperCase();
     let currentfolderupper = currentfolder.toUpperCase();
 
+    //set checkall to false
+    $(`#checkall`).prop('checked', false);
     //foreach key i ndatacratecontent, if the key contains the currentfolder and the key contains the searchtext then add the key to the currentfiles array
     for(let key in DatacrateContent){
       let keyupper = key.toUpperCase();
@@ -209,7 +237,7 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
         currentfiles = [...currentfiles, key];
       }
     }
-    console.log(currentfiles);
+    //console.log(currentfiles);
     setListcurrentfiles(currentfiles);
   }, [currentfolder, searchtext]);
 
@@ -218,8 +246,8 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
     //check if modalContent contains the keys "info" and "file_name"
     if(modalContent.hasOwnProperty("info") && modalContent.hasOwnProperty("file_name")){
       //check if the length of oject.keys(specificFileContent) is  > 0
-      console.log(specificFileContent);
-      console.log(Object.keys(specificFileContent));
+      //console.log(specificFileContent);
+      //console.log(Object.keys(specificFileContent));
       if(Object.keys(specificFileContent).length > 0){
         return(
           <Modal show={showmodal} fullscreen={true} onHide={() => setShowmodal(false)}>
@@ -302,7 +330,8 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
             ShowAnnotationModal, setShowAnnotationModal,
             ActionPerforming, setActionPerforming,
             listcurrentfiles,checkboxSelectedFiles,
-            normalselectedfiles, setNormalselectedfiles)}
+            normalselectedfiles,
+            AnnotationFileInfo)}
         </div>
         <div className="searchbar">
           <div className="input_folder">
@@ -321,6 +350,53 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
           </div>
         </div>
         <div className="metadata_file">
+          <div className="content_item">
+            <div className="actions"></div>
+            <div className="file-storage"></div>
+            <div className="file-content">
+              <div className="file-name">
+                  <input type="checkbox" id="checkall" onClick={(e) => {
+                    if (e.target.checked) {
+                      // foreach file in listcurrentfiles, push the compressed version into the checkboxSelectedFiles array
+                      listcurrentfiles.forEach((file) => {
+                        //check if file is already in checkboxSelectedFiles
+                        if(!checkboxSelectedFiles.includes(convertFileName(file))){
+                          checkboxSelectedFiles.push(convertFileName(file));
+                        }
+                        if(!normalselectedfiles.includes(file)){
+                          normalselectedfiles.push(file);
+                        }
+                      });
+                      console.log(checkboxSelectedFiles);
+                      setNormalselectedfiles(normalselectedfiles);
+                      setCheckboxSelectedFiles(checkboxSelectedFiles);
+                    } else {
+                      console.log(checkboxSelectedFiles);
+                      console.log("unchecking files");
+                      //go over all files in the listcurrentfiles array and delete all instances them from the checkboxSelectedFiles array
+                      listcurrentfiles.forEach((file) => {
+                        //delete all instances of the file from the checkboxSelectedFiles array
+                        //TODO fix this issue where the checkboxSelectedFiles array is not updated properly
+                        checkboxSelectedFiles.forEach((selectedfile, index) => {
+                          if (selectedfile === convertFileName(file)) {
+                            checkboxSelectedFiles.splice(index, 1);
+                          }
+                        });
+                        //delete all instances of the file from the normalselectedfiles array
+                        normalselectedfiles.forEach((selectedfile, index) => {
+                          if (selectedfile === file) {
+                            normalselectedfiles.splice(index, 1);
+                          }
+                        });
+                      });
+                      setNormalselectedfiles(normalselectedfiles);
+                      setCheckboxSelectedFiles(checkboxSelectedFiles);
+                    }
+                  }}/>
+                check all files
+              </div>
+            </div>
+          </div>
           {Object.keys(DatacrateContent).map((key) => {
             //check if the key contains the currentfolder and the searchtext
             //convert key to uppercase
