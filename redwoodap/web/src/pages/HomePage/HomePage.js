@@ -1,8 +1,11 @@
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import useStore from 'src/store'
-import Taskbox from 'src/components/Taskbox/Taskbox'
-import { useRef } from 'react'
+import { useRef, useState , useEffect} from 'react'
+import { Modal, Button } from 'react-bootstrap'
+import axios from 'axios';
+import { getCheckSetup, getFolderSetup, getSshCheck, BASE_URL_SERVER } from 'src/utils/AxiosRequestsHandlers'
+import TaskBar from 'src/components/TaskBar/TaskBar';
+import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import './HomePage.css'
 
 const HomePage = () => {
@@ -24,6 +27,67 @@ const HomePage = () => {
   ))}
   const all_spaces = useStore((state) => state.spaces)
   */
+
+  //define all constants first
+  //All the functions here
+  const [show, setShow] = useState(false);
+  const [setupready, setSetupReady] = useState(true);
+  const [username, setUsername] = useState('');
+  const [ORCID, setORCID] = useState('');
+  const [PerformTaskForm, setPerformTaskForm] = useState(false);
+  const [Taskcompleted, setTaskcompleted] = useState(false);
+  const [Taskfailed, setTaskfailed] = useState(false);
+  const [Taskrunning, setTaskrunning] = useState(false);
+  const [TaskResponse, setTaskResponse] = useState("");
+  const [SSHsetupsuccess, setSSHsetupsuccess] = useState(false);
+  const [Userdatasetupsucess, setUserdatasetupsucess] = useState(false);
+  const [Folderstructuresetupsucess, setFolderstructuresetupsucess] = useState(false);
+  const [Continuebuttontext, setContinuebuttontext] = useState("Complete setup first");
+  const taskpayload = []
+
+  //check if SSH setup is done and if folder structure is done
+  const checkifsetupdone = () => {
+      if(SSHsetupsuccess && Folderstructuresetupsucess){
+          setContinuebuttontext("Continue");
+          setSetupReady(false);
+      }
+  }
+
+  //axios request get to tasks/checkcompletestatus 
+  const checkcompletestatus = async () => {
+      await axios.get(BASE_URL_SERVER+'/tasks/checkcompletestatus')
+      .then(res => {
+          console.log(res.data);
+      })
+      .catch(error => {
+          setShow(true);
+      }
+      )
+  }
+
+
+  //perform axios get request to tasks/finishsetup
+  const finishsetup = async () => {
+      try {
+          const response = await axios.get(BASE_URL_SERVER+'/tasks/finishsetup');
+          console.log(response.data);
+          setSSHsetupsuccess(true);
+          setUserdatasetupsucess(true);
+          setFolderstructuresetupsucess(true);
+          setSetupReady(false);
+          checkifsetupdone();
+      } catch (error) {
+          console.log(error);
+      }
+  }
+
+
+  useEffect(() => {
+      checkcompletestatus();
+      checkifsetupdone();
+  }
+  ,[SSHsetupsuccess, Folderstructuresetupsucess]);
+
 
   return (
     <>
@@ -66,6 +130,27 @@ const HomePage = () => {
             </section>
         </div>
       </main>
+      <Modal show = {show} size="lg">
+        <Modal.Header>
+            <Modal.Title>Welcome to the site new user!</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <p>
+                Set up the DMBON assistent by filling in the form below.
+            </p>
+            <TaskBar TaskRequest = "foldersetup" TaskDescription="Setting up folder structure for first usage" TypeRequest="get" targetsuccess = {setFolderstructuresetupsucess} TaskPayload={taskpayload}/>
+            <TaskBar TaskRequest = "sshcheck" TaskDescription="Checking if ssh key exists and is connected" TypeRequest="get"  targetsuccess = {setSSHsetupsuccess} TaskPayload={taskpayload}/>
+        </Modal.Body>
+        <Modal.Footer>
+            <button disabled={setupready} className="btn modalbutton large" onClick={() => {
+                finishsetup();
+                window.location.href = "/";
+            }
+            }>
+                {Continuebuttontext}
+            </button>
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }
