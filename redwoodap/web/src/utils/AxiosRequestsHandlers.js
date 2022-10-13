@@ -135,7 +135,7 @@ export const getOpenFileExplorer = (id) => {
 }
 
 // apost request to add reference to datacrate
-export const postAddReference = (id, reference) => {
+export const postAddReferences = (id, reference) => {
   return axios.post(`${BASE_URL_SERVER}/spaces/${id}/content/reference`, reference);
 }
 
@@ -165,8 +165,8 @@ export const getAnnotationsFile = (id, file_id) => {
 }
 
 // post new blanknote for specific file in datacrate
-export const postBlanknoteFile = (id, file_id, payload) => {
-  return axios.post(`${BASE_URL_SERVER}/spaces/${id}/annotation/file/blanknode/${file_id}`, payload);
+export const postNodeFile = (id, file_id, payload) => {
+  return axios.post(`${BASE_URL_SERVER}/spaces/${id}/annotation/file/node/${file_id}`, payload);
 }
 
 // delete annotation for specific file in datacrate
@@ -215,4 +215,8 @@ export const getFinishSetup = () => {
 
 export const getCheckSetup = () => {
   return axios.get(`${BASE_URL_SERVER}/tasks/checkcompletestatus`);
+}
+
+export const getAnnotationByNodeType = (id, node_type) => {
+  return axios.get(`${BASE_URL_SERVER}/spaces/${id}/annotation/type/${node_type}`);
 }

@@ -10,16 +10,8 @@ const handleChange = (event) => {
   predicate_value = event.target.value;
 }
 
-const predicate_options = [];
-for (var i = 0; i < allResourceNodes.length; i++) {
-  //if allresourcenode[i]["@type"] == predicate_name => add to options
-  predicate_options.push(allResourceNodes[i]["@id"]);
-  console.log(predicate_options);
-}
-
 //function that perform a axios post request to add predicate to the file
 const addPredicate = async () => {
-
   //format the filename to be uri compliant
   let formatted_filename = encodeURIComponent(file_name);
   //make the payload according to following standards: {"Annotations": [{"URI_predicate_name": "string","value": "string"}]}
@@ -44,14 +36,15 @@ const addPredicate = async () => {
 }
 
 //function that perform an axios post request to add a blank node to the metadata file
-const addBlankNode = async (e) => {
+const addNode = async (e) => {
   //change the frist letter of uri_predicate to uppercase
   console.log("adding blank node");
   console.log(predicate_name);
   let formatted_filename = encodeURIComponent(file_name);
   let payload = {
     "URI_predicate_name": predicate_name,
-    "node_type": predicate_name
+    "node_type": predicate_name,
+    "node_id": ""
   }
   setAddingAnnotation(true);
   postBlanknodeFile(datacrate_uuid, formatted_filename, payload).then(res => {
@@ -63,7 +56,29 @@ const addBlankNode = async (e) => {
     setAddingAnnotation(false);
   }
   );
+}
 
+//function that perform an axios post request to add a blank node to the metadata file
+const addExistingNode = async (e) => {
+  //change the frist letter of uri_predicate to uppercase
+  console.log("adding blank node");
+  console.log(predicate_name);
+  let formatted_filename = encodeURIComponent(file_name);
+  let payload = {
+    "URI_predicate_name": predicate_name,
+    "node_type": predicate_name,
+    "node_id": predicate_value
+  }
+  setAddingAnnotation(true);
+  postBlanknodeFile(datacrate_uuid, formatted_filename, payload).then(res => {
+    console.log(res);
+    setAddingAnnotation(false);
+  }
+  ).catch(err => {
+    console.log(err);
+    setAddingAnnotation(false);
+  }
+  );
 }
 
 function Alertlogsprops(props) {
@@ -262,15 +277,36 @@ function Alertlogsprops(props) {
                 )
             }else{
                 return(
-                    <>
-                      <button onClick={(e) => addBlankNode(e)} className="button_vliz space_button">add {predicate_name} node</button>
-                      <select onChange={(e) => handleChange(e)} aria-label="Default select example">
-                          <option>Select option</option>
-                          {allResourceNodes.map(allResourceNode =>
-                              <option>{allResourceNode}</option>
-                          )}
-                      </select>
-                    </>
+                  <>
+                    <table className='node_add_table'>
+                        <tr>
+                          <td>
+                            <button onClick={(e) => addNode(e)} className="button_vliz space_button">create new {predicate_name} node</button>
+                          </td>
+                          <td>
+                            <div className='add_existing_node'>
+                              <select onChange={(e) => handleChange(e)} aria-label="Default select example">
+                                <option>Select option</option>
+                                {allResourceNodes.map(allResourceNode => {
+                                  console.log(allResourceNode);
+                                  if (allResourceNode["@type"] == predicate_name){
+                                    return(
+                                      <option>{allResourceNode["@id"]}</option>
+                                    )
+                                  }else{
+                                    return(
+                                      <></>
+                                    )
+                                  }
+                                }
+                                )}
+                              </select>
+                              <button onClick={(e) => addExistingNode(e)} className="button_vliz space_button">add existing {predicate_name} node</button>
+                            </div>
+                          </td>
+                        </tr>
+                    </table>
+                  </>
                 )
             }
         }else{

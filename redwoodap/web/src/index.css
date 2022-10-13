@@ -514,3 +514,22 @@ input.error, textarea.error {
   font-weight: bold;
   text-align: center;
 }
+
+.node_add_table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/*all children of add_existing_node should be the same width and underneath each other */
+.add_existing_node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/*all children of add_existing_node should be the same width and underneath each other */
+.add_existing_node > * {
+  min-width: 50%;
+  padding: 0.5rem;
+  margin: 0.2rem;
+}

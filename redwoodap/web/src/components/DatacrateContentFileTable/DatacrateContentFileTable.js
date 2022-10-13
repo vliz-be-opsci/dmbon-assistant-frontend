@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import { getAllAnnotations, getAnnotationsFile, postAnnotationFile, deleteAnnotationFile, postBlanknoteFile} from "src/utils/AxiosRequestsHandlers";
+import { getAllAnnotations, getAnnotationsFile, postAnnotationFile, deleteAnnotationFile, postNodeFile} from "src/utils/AxiosRequestsHandlers";
 import AxiosError from "../AxiosError/AxiosError";
 import {Modal} from "react-bootstrap";
 import { FaSearch } from "react-icons/fa";
@@ -162,7 +162,7 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
           //console.log('this is a resource node');
           //console.log(entry);
           //add the entry to the allResourceNodes state
-          allResourceNodess.push(entry);
+          allResourceNodess.push(res.data.data[entry]);
         }else{
           //add the key and value to the contentdata object
           contentdata[entry] = res.data.data[entry];
@@ -268,7 +268,7 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
                  modalContent.file_name,
                  postAnnotationFile,
                  setAddingAnnotation,
-                 postBlanknoteFile,
+                 postNodeFile,
                  allResourceNodes
                 )
               }

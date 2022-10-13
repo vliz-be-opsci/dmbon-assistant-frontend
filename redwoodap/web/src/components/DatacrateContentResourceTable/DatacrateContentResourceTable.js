@@ -1,5 +1,5 @@
 import { useState, useEffect} from "react";
-import { getAllAnnotations, getAnnotationsFile, postAnnotationFile, deleteAnnotationFile, postBlanknoteFile} from "src/utils/AxiosRequestsHandlers";
+import { getAllAnnotations, getAnnotationsFile, postAnnotationFile, deleteAnnotationFile, postNodeFile} from "src/utils/AxiosRequestsHandlers";
 import AxiosError from "../AxiosError/AxiosError";
 import {Modal} from "react-bootstrap";
 
@@ -23,7 +23,7 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
   const [ValueAnnotation, setValueAnnotation] = useState("");
   const [AddingAnnotation, setAddingAnnotation] = useState(false);
   const [DeletingAnnotation, setDeletingAnnotation] = useState(false);
-
+  const [allResourceNodes,setAllResourceNodes] = useState([]);
    //filerow specific states
    const [checkboxSelectedFiles, setCheckboxSelectedFiles] = useState([]);
    const [normalselectedfiles, setNormalselectedfiles] = useState([]);
@@ -87,16 +87,19 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
     getAllAnnotations(datacrate_uuid).then(res => {
       //for entry in res.data.data, if the key contains http or https then console.log
       let contentdata = {};
+      let allResourceNodess = [];
       for(let entry in res.data.data){
         if(entry.includes("http") || entry.includes("https") || !entry.startsWith("./")){
           contentdata[entry] = res.data.data[entry];
+          allResourceNodess.push(res.data.data[entry]);
         }else{
           //add the key and value to the contentdata object
           console.log(entry);
         }
       }
-
+      console.log(allResourceNodess);
       setDatacrateContent(contentdata);
+      setAllResourceNodes(allResourceNodess);
       //console.log(res.data.data);
       setLoading(false);
     }
@@ -153,7 +156,8 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
                  modalContent.file_name,
                  postAnnotationFile,
                  setAddingAnnotation,
-                 postBlanknoteFile
+                 postNodeFile,
+                 allResourceNodes
                 )
               }
               <br></br>
