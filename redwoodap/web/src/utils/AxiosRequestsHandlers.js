@@ -3,8 +3,11 @@ import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
 //check if this actually does anything?
-axiosRetry(axios, { retries: 4 });
+axiosRetry(axios, { retries: 5 });
 axiosRetry(axios, { retryDelay: axiosRetry.exponentialDelay });
+//axiops retry ignore cors errors
+axiosRetry(axios, { shouldResetTimeout: true });
+axiosRetry(axios, { retryCondition: () =>  true });
 const base_url = "http://localhost:6656";
 export const BASE_URL_SERVER = `${base_url}/apiv1`;
 //write all diff api requests here and export them
