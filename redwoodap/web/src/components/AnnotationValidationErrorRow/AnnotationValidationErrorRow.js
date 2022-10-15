@@ -260,52 +260,42 @@ function Alertlogsprops(props) {
             if(node_in_graph){
                 return(
                     <>
-                        <Form>
-                            <table>
-                                <tr>
-                                    <td style={{"width":"15%"}}><b>{predicate_name}:</b></td>
-
-                                    <td colSpan="2" style={{"width":"100%"}}>
-                                      <Link to={routes.specificDatacratePageNode({ datacrate_id: datacrate_uuid , node_id: href_button_node_value})}>
-                                      {button_node_value}
-                                      </Link>
-                                      </td>
-                                </tr>
-                            </table>
-                        </Form>
+                      <Form>
+                        <table>
+                          <tr>
+                            <td style={{"width":"15%"}}><b>{predicate_name}:</b></td>
+                            <td colSpan="2" style={{"width":"100%"}}>
+                              <Link to={routes.specificDatacratePageNode({ datacrate_id: datacrate_uuid , node_id: href_button_node_value})}>
+                              {button_node_value}
+                              </Link>
+                            </td>
+                          </tr>
+                        </table>
+                      </Form>
                     </>
                 )
             }else{
                 return(
                   <>
-                    <table className='node_add_table'>
-                        <tr>
-                          <td>
-                            <button onClick={(e) => addNode(e)} className="button_vliz space_button">create new {predicate_name} node</button>
-                          </td>
-                          <td>
-                            <div className='add_existing_node'>
-                              <select onChange={(e) => handleChange(e)} aria-label="Default select example">
-                                <option>Select option</option>
-                                {allResourceNodes.map(allResourceNode => {
-                                  console.log(allResourceNode);
-                                  if (allResourceNode["@type"] == predicate_name){
-                                    return(
-                                      <option>{allResourceNode["@id"]}</option>
-                                    )
-                                  }else{
-                                    return(
-                                      <></>
-                                    )
-                                  }
-                                }
-                                )}
-                              </select>
-                              <button onClick={(e) => addExistingNode(e)} className="button_vliz space_button">add existing {predicate_name} node</button>
-                            </div>
-                          </td>
-                        </tr>
-                    </table>
+                    <div className='add_existing_node'>
+                      <select onChange={(e) => handleChange(e)} aria-label="Default select example">
+                      <option>create new {predicate_name} node</option>
+                      {allResourceNodes.map(allResourceNode => {
+                        console.log(allResourceNode);
+                          if (allResourceNode["@type"] == predicate_name){
+                            return(
+                              <option>{allResourceNode["@id"]}</option>
+                            )
+                          }else{
+                            return(
+                              <></>
+                            )
+                        }
+                      }
+                      )}
+                      </select>
+                      <button onClick={(e) => addExistingNode(e)} className="button_vliz space_button">Add {predicate_name} node</button>
+                    </div>
                   </>
                 )
             }

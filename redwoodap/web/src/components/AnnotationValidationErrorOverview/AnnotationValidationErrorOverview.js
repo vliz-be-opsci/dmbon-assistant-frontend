@@ -42,7 +42,13 @@ const AnnotationValidationErrorOverview = (shacl_requirements,showerror, setshow
         console.log(sr[i]);
         console.log(Object.keys(sr[i]));
         if(Object.keys(sr[i]).includes("@type") && Object.keys(sr[i]).includes("http://www.w3.org/ns/shacl#focusNode")){
-          //get name of predicate from result path
+          //check if the last part of the focusnode is equal to the filename
+          var focusnode = sr[i]["http://www.w3.org/ns/shacl#focusNode"][0]["@id"];
+          var focusnode_split = focusnode.split("/");
+          var focusnode_last = focusnode_split[focusnode_split.length-1];
+          //check if focusnode_last is substring of file_name
+          if(file_name.includes(focusnode_last)){
+            //get name of predicate from result path
           console.log(sr[i]["http://www.w3.org/ns/shacl#resultPath"]);
           var array_name_predicate = sr[i]["http://www.w3.org/ns/shacl#resultPath"][0]["@id"].split("/");
           var predicate_name = array_name_predicate[array_name_predicate.length-1];
@@ -79,7 +85,9 @@ const AnnotationValidationErrorOverview = (shacl_requirements,showerror, setshow
             }
           }
           current_node_dict["constraint_props"] = constraint_props;
+          }
         }
+
         if(Object.keys(current_node_dict).length > 0){
           manipulated_array.push(current_node_dict);
         }
