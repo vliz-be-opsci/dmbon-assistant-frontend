@@ -7,6 +7,7 @@ const AnnotationValidationErrorRow = (predicate_name,severity_error, constraint_
 let predicate_value = ""
 //function that changes the value of the input
 const handleChange = (event) => {
+  console.log(event);
   predicate_value = event.target.value;
 }
 
@@ -277,6 +278,7 @@ function Alertlogsprops(props) {
             }else{
                 return(
                   <>
+                    make or add an existing node
                     <div className='add_existing_node'>
                       <select onChange={(e) => handleChange(e)} aria-label="Default select example">
                       <option>create new {predicate_name} node</option>
@@ -294,6 +296,9 @@ function Alertlogsprops(props) {
                       }
                       )}
                       </select>
+                      <hr></hr>
+                      Add {predicate_name} via URI
+                      <Form.Group><Form.Control name="uriform" type="text" onChange={(e) => handleChange(e)} placeholder="Enter URI" aria-label="Default select example"/></Form.Group>
                       <button onClick={(e) => addExistingNode(e)} className="button_vliz space_button">Add {predicate_name} node</button>
                     </div>
                   </>
