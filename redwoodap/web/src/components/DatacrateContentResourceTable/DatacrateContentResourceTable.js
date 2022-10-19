@@ -18,7 +18,7 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
   const [showmodal, setShowmodal] = useState(false);
   const [showAnnotationErrors, setShowAnnotationErrors] = useState(true);
   const [modalContent, setModalContent] = useState({});
-  const [specificFileContent, setSpecificFileContent] = useState({});
+  const [specificFileContent, setSpecificFileContent] = useState([{}]);
   const [PredicateAnnotation, setPredicateAnnotation] = useState("");
   const [ValueAnnotation, setValueAnnotation] = useState("");
   const [AddingAnnotation, setAddingAnnotation] = useState(false);
@@ -37,7 +37,8 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
         //console.log(modalContent.file_name);
         getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
           //console.log(res.data);
-          setSpecificFileContent(res.data);
+          let checked_data = checkAnnotationValues(res.data);
+          setSpecificFileContent(checked_data);
           // set the DatarcateContent.file.summary to res.data.summary
           let file_name = modalContent.file_name;
           //loop through keys of DatacrateContent and if the key is file_name then set the summary to the summary of the file
@@ -57,6 +58,24 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
     }
   }, [DeletingAnnotation]);
 
+  //function that will check if all the values in a resp are predicate , value and if the key value is a str or int and if something else then it will convert it into str
+  const checkAnnotationValues = (resp) => {
+    for(let item in resp){
+      if(item == "data"){
+        for(let i = 0; i < resp[item].length; i++){
+          let predicate = resp[item][i].predicate;
+          let value = resp[item][i].value;
+          if(typeof value !== "string"){
+            resp[item][i].value = value.toString();
+          }
+        }
+      }
+    }
+    console.warn("resp coming");
+    console.log(resp);
+    return resp;
+  }
+
 
   //useffect that gets triggered by a change in AddingAnnotation, if adding annotation is false it will get annotations for file and set the state to the annotations
   useEffect(() => {
@@ -65,7 +84,8 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
         //console.log(modalContent.file_name);
         getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
           //console.log(res.data);
-          setSpecificFileContent(res.data);
+          let checked_data = checkAnnotationValues(res.data);
+          setSpecificFileContent(checked_data);
           let file_name = modalContent.file_name;
           for(let key in DatacrateContent){
             if(key === file_name){
@@ -117,8 +137,9 @@ const DatacrateContentResourceTable = (datacrate_uuid) => {
     if(modalContent.file_name){
       //console.log(modalContent.file_name);
       getAnnotationsFile(datacrate_uuid, encodeURIComponent(modalContent.file_name)).then(res => {
-        //console.log(res.data);
-        setSpecificFileContent(res.data);
+        console.log(res.data);
+        let checked_data = checkAnnotationValues(res.data);
+        setSpecificFileContent(checked_data);
       }).catch(err => {
         //console.log(err);
         setError(true);

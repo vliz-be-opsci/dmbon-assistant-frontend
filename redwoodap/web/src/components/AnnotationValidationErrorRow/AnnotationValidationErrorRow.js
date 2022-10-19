@@ -111,7 +111,12 @@ function Alertlogsprops(props) {
             if(spacelist_data[i]["predicate"] === predicate_name){
                 console.log(spacelist_data[i]["value"]);
                 var button_node_value = spacelist_data[i]["value"];
-                var href_button_node_value = spacelist_data[i]["value"].split("nodeshape: ")[1];
+                try {
+                  var href_button_node_value = spacelist_data[i]["value"].split("nodeshape: ")[1];
+                } catch (error) {
+                  var href_button_node_value = "faulthu valeu";
+                }
+
             }
         }
     }
