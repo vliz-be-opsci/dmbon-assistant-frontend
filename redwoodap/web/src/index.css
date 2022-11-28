@@ -533,3 +533,7 @@ input.error, textarea.error {
   padding: 0.5rem;
   margin: 0.2rem;
 }
+
+#vocab-search-bar {
+  background-color: #ddd8;
+}

@@ -97,6 +97,12 @@ const HomePage = () => {
             <section className="blue">
                 <h2>DM-BON Assistant</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                <vocab-search-bar
+                    id="vocab-search-bar"
+                    query="Mytilus edulis"
+                    sourceDataset="https://my-application.com/dataset/6380D104B379DA7B645D77D1"
+                    search-endpoint="https://vocabsearch.redpencil.io"
+                > </vocab-search-bar>
             </section>
             <section className="dark">
                 <h2>TODO have a section for the user to create a new space</h2>
