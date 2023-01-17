@@ -5,6 +5,8 @@ import { MetaTags } from '@redwoodjs/web'
 import AxiosError from 'src/components/AxiosError/AxiosError'
 import { getAllDatacrates } from 'src/utils/AxiosRequestsHandlers'
 import process from 'process';
+import { Modal } from 'react-bootstrap'
+import { FaTrash } from 'react-icons/fa'
 import { getAllProfiles } from 'src/utils/AxiosRequestsHandlers';
 import LoadingBlock from "src/components/LoadingBlock/LoadingBlock";
 import 'src/components/component.css';
@@ -16,8 +18,7 @@ const OverviewDatacratesPage = () => {
   const [error, setError] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [all_profiles, setProfiles] = useState([])
-
-
+  const [showModal, setShowModal] = useState(false)
 
   const getProfileName = (profile_uuid) => {
     for (let i = 0; i < all_profiles.length; i++) {
@@ -73,6 +74,28 @@ const OverviewDatacratesPage = () => {
     return datacrate_name;
   }
 
+  const ModalComponent = () => {
+    if (showModal) {
+      return (
+        <Modal show={showModal} onHide={() => setShowModal(false)} fullscreen="down-xxl" size="xl">
+          <Modal.Header closeButton>
+            <Modal.Title>Modal for adding crate here</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>some params you need to fill in</Modal.Body>
+          <Modal.Footer>
+            <button className='fullwidth' onClick={() => setShowModal(false)}>
+              Close
+            </button>
+          </Modal.Footer>
+        </Modal>
+      )
+    }
+    else{
+      return null
+    }
+  }
+
+
   //render
   if(loading) {
     return(LoadingBlock("Loading Datacrates..."))
@@ -99,7 +122,8 @@ const OverviewDatacratesPage = () => {
           <tbody>
             {all_spaces.map((space) => (
               <tr key={space.name}>
-                <td>
+                <td className='flex'>
+                  <button onClick={()=>{window.alert("delete handler here")}}><FaTrash></FaTrash> </button>
                   <Link to={routes.specificDatacrate({ datacrate_id: String(space.name) })}>
                     {datacrate_name(space.storage_path)}
                   </Link>
@@ -107,10 +131,15 @@ const OverviewDatacratesPage = () => {
                 <td>{getProfileName(space.RO_profile)}</td>
               </tr>
             ))}
+            <tr>
+              <td colSpan={2}>
+                <button className='fullwidth' onClick={()=> {setShowModal(true)}}>New Datacrate</button>
+              </td>
+            </tr>
           </tbody>
         </table>
         </div>
-
+        <ModalComponent />
       </>
     )
   }

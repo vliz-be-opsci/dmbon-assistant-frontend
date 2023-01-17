@@ -234,6 +234,7 @@ input.error, textarea.error {
 
 .fullwidth {
   width: 100%;
+  margin: auto;
 }
 
 .searchbar {
@@ -470,6 +471,9 @@ input.error, textarea.error {
   margin: 0.2rem;
 }
 
-#vocab-search-bar {
-  background-color: #ddd8;
+.flex {
+  display: flex;
+  float: left;
+  flex-direction: row;
+  justify-content: space-between;
 }

@@ -175,7 +175,8 @@ const DatacrateGitStatus = (datacrate_uuid) => {
     //check if git_status_timeline.checked exists
     if (!git_status_timeline_.checked) {
       git_status_timeline_.checked = {
-        'color': '#5cb85c'
+        'color': '#5cb85c',
+        'subtitle': 'All Good'
       }
     }
     return git_status_timeline_
