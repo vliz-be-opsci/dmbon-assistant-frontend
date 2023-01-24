@@ -3,7 +3,7 @@ import "./MainLayout.css"
 const MainLayout = ({ children }) => {
   return (
   <>
-    <div className="main container">
+    <div className="main childcontainer">
       <div className="childcontainer"><Navbar /></div>
       <div className="childcontainer">
         {children}

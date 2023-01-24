@@ -1,12 +1,13 @@
-import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
-import { useRef, useState , useEffect} from 'react'
-import { Modal, Button } from 'react-bootstrap'
+import { Link, routes } from '@redwoodjs/router';
+import { MetaTags } from '@redwoodjs/web';
+import { useRef, useState , useEffect} from 'react';
+import { Modal, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { getCheckSetup, getFolderSetup, getSshCheck, BASE_URL_SERVER } from 'src/utils/AxiosRequestsHandlers'
+import { getCheckSetup, getFolderSetup, getSshCheck, BASE_URL_SERVER } from 'src/utils/AxiosRequestsHandlers';
+import {GiMaterialsScience} from 'react-icons/gi';
 import TaskBar from 'src/components/TaskBar/TaskBar';
-import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import './HomePage.css'
+import '../../../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import './HomePage.css';
 
 const HomePage = () => {
   /*
@@ -53,7 +54,7 @@ const HomePage = () => {
       }
   }
 
-  //axios request get to tasks/checkcompletestatus 
+  //axios request get to tasks/checkcompletestatus
   const checkcompletestatus = async () => {
       await axios.get(BASE_URL_SERVER+'/tasks/checkcompletestatus')
       .then(res => {
@@ -88,25 +89,38 @@ const HomePage = () => {
   }
   ,[SSHsetupsuccess, Folderstructuresetupsucess]);
 
-
   return (
     <>
       <MetaTags title="Home" description="Home page" />
       <main>
         <div>
             <section className="blue">
-                <h2>DM-BON Assistant</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-                <vocab-search-bar
-                    id="vocab-search-bar"
-                    query="Mytilus edulis"
-                    sourceDataset="https://my-application.com/dataset/6380D104B379DA7B645D77D1"
-                    search-endpoint="https://vocabsearch.redpencil.io"
-                > </vocab-search-bar>
+                <h1 className='align_self_base'>Our vision</h1>
+                <div className='flex'><GiMaterialsScience className='react_icon'></GiMaterialsScience><p>We believe in open and transparent management of data in order to facilitate discovery, in line with the FAIR principles.</p></div>
+                <div className='flex'><GiMaterialsScience className='react_icon'></GiMaterialsScience><p>We believe that researchers should be able to easily search through scientific data, similar to how they would perform a web search.</p></div>
+                <div className='flex'><GiMaterialsScience className='react_icon'></GiMaterialsScience><p>For scientific data to be FAIR and useful for search queries, it must adhere to specific rules to make it easy for others to discover, filter, and reuse the data.</p></div>
+                <div className='flex'><GiMaterialsScience className='react_icon'></GiMaterialsScience><p>Ideally, tools should exist to make it easy for data gatherers to upload and distribute meaningful data.</p></div>
+                <div className='flex'><GiMaterialsScience className='react_icon'></GiMaterialsScience><p>This project aims to assist people in uploading their data (including metadata) to the web, with the goal of supporting complex search queries on distributed datasets in future projects.</p></div>
+                <img src={"https://raw.githubusercontent.com/vliz-be-opsci/dmbon-assistant/main/img/diagrams/envisioned-ecosystem-black.svg"} alt="Envisioned ecosystem" className='no_background_png'/>
+                <i>
+                A schematic overview of our vision: FAIR and distributed access to data and metadata using complex queries.
+                (1.) A user uploads heterogeneous data using DMBON assistant. Our service first ensures the FAIR principle by packaging data in an RO-crate that contains the necessary metadata.
+                Then another service generates miniature webpages from every individual RO-crate, which can be easily accessed using any browser to preview data.
+                (2.) The distributed data lives on the web (e.g., using cloud services) and is summarized in a knowledge graph which can be queried using complex queries.
+                (3.) When other users provide queries, the search engine summarizes the data that matches the query conveniently in a table to be used for analysis.
+                </i>
             </section>
             <section className="dark">
-                <h2>TODO have a section for the user to create a new space</h2>
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <h2 className='underline'>How does it work?</h2>
+                <img src={"https://raw.githubusercontent.com/vliz-be-opsci/dmbon-assistant/main/img/diagrams/dmbon-assistant-black.svg"} alt="Envisioned ecosystem explanation" className='no_background_png'/>
+                <p>On the left, we see a user that has multiple sources of data and metadata. These can range from raw data and metadata to (source code to) analyses and publications. Importantly, much of the raw data is often uploaded to some external cloud service (such as ENA for DNA sequence information). As such, links to the raw data can be provided as well!</p>
+                <p>DMBON assistant, here highlighted in blue, provides an easy way of uploading heterogeneous data using any browser! Hidden under the hood, DMBON assistant ensures that the data description conforms to the data management plan of the organization. Finally, the assistant generates a publishable Research Object Crate (RO-crate) that neatly packages heterogeneous research data with their metadata. Explain the general premise of DMBON-assistant</p>
+                <p>As such, using DMBON assistant greatly simplifies generation of FAIR research object crates by:</p>
+                <ul>
+                    <p>- Providing a simple interface to upload data and metadata</p>
+                    <p>- Ensuring that the data description conforms to the data management plan of the organization</p>
+                    <p>- Generating a publishable Research Object Crate (RO-crate) that neatly packages heterogeneous research data with their metadata</p>
+                </ul>
                 <div class="custom-shape-divider-top-1649669784">
                     <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                         <path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" class="shape-fill"></path>
@@ -118,8 +132,10 @@ const HomePage = () => {
             <div className="sidebox_one counterclockwise_turned"></div>
             <div className="sidebox_two clockwise_turned"></div>
             <section className="light">
-                  <h2>TODO have a section for the user to create a new space</h2>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus libero leo, pellentesque ornare, adipiscing vitae, rhoncus commodo, nulla. Fusce quis ipsum. Nulla neque massa, feugiat sed, commodo in, adipiscing ut, est. In fermentum mattis ligula.</p>
+                  <h2>Who are we?</h2>
+                  <p>
+                  We are a dynamic and passionate team of six individuals working towards the advancement of open science. Our team comprises of experts in various fields, including data science, computational biology, and psychology. We are driven by the belief that scientific knowledge should be freely accessible to all, and we work tirelessly to make this a reality. Our team members are not only highly skilled in their respective areas of expertise, but they are also enthusiastic about learning and experimenting with new technologies. We are constantly pushing the boundaries of what is possible in our field and are excited to see the impact of our research on the world. Join us in our mission to make science more open, accessible, and inclusive.
+                  </p>
                 <div>
                 <svg className="blob-motion" id="visual" viewBox="0 0 960 330" width="960" height="330" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" version="1.1">
                     <rect x="0" y="0" width="960" height="330" fill="#6cb2c5"></rect>

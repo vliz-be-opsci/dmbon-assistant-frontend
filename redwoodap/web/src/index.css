@@ -474,6 +474,45 @@ input.error, textarea.error {
 .flex {
   display: flex;
   float: left;
-  flex-direction: row;
+  align-self: flex-start;
   justify-content: space-between;
+  flex-direction: row;
+}
+
+/*class here to set the size of a react icon */
+.react_icon {
+  font-size: 40px;
+  min-width: 40px;
+  margin-right: 10px;
+  animation: rotate 10s alternate-reverse infinite;
+}
+
+/*animation that rotates element*/
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+    color: #1a94aa70;
+  }
+  to {
+    transform: rotate(360deg);
+    color: #1a94aa;
+  }
+}
+
+.no_background_png {
+  /*have a background transition from #006582 on the outside to f0f8ff88 on the inside*/
+  background-color: #f0f8ff;
+  border-radius: 5px;
+  padding: 10px;
+  width: auto;
+  margin-bottom: 20px;
+}
+
+.align_self_base {
+  align-self: baseline;
+  text-decoration: underline;
+}
+
+.underline {
+  text-decoration: underline;
 }
