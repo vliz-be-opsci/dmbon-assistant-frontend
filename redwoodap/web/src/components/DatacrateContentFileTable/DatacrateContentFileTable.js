@@ -31,6 +31,7 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
   const [AddingAnnotation, setAddingAnnotation] = useState(false);
   const [DeletingAnnotation, setDeletingAnnotation] = useState(false);
   const [allResourceNodes,setAllResourceNodes] = useState([]);
+  const [changemodalto, setChangemodalto] = useState("");
 
   //filerow specific states
   const [checkboxSelectedFiles, setCheckboxSelectedFiles] = useState([]);
@@ -51,7 +52,7 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
   const [searchtext, setsearchtext] = useState("");
 
   console.log(`predicate annotation is ${PredicateAnnotation}`);
-  console.log(`dtatacratecontent is ${DatacrateContent}`);
+  console.log(`datacratecontent is ${DatacrateContent}`);
 
   //useEffect that gets triggered by a change in the normal selected files
   useEffect(() => {
@@ -289,7 +290,6 @@ const DatacrateContentFileTable = (datacrate_uuid) => {
                 )
               }
               <br></br>
-
             </Modal.Body>
           </Modal>
           )

@@ -20,7 +20,6 @@ function ButtonShow(showerror,setshowerror,class_alert) {
 }
 
 const AnnotationValidationErrorOverview = (shacl_requirements,showerror, setshowerror,spaceList,datacrate_uuid,file_name,postAnnotationFile,setAddingAnnotation,postBlanknodeFile,allResourceNodes) => {
-
   const sr = shacl_requirements;
   console.log(sr);
   try {
