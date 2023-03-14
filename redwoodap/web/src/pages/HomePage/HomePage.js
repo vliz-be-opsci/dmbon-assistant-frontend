@@ -166,7 +166,8 @@ const HomePage = () => {
         <Modal.Footer>
             <button disabled={setupready} className="btn modalbutton large" onClick={() => {
                 finishsetup();
-                window.location.href = "/";
+                setShow(false);
+                //window.location.href = "/";
             }
             }>
                 {Continuebuttontext}
